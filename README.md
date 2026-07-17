@@ -120,7 +120,7 @@ extra_headers: "X-Forwarded-For: 127.0.0.1"
 user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
 
 # Rate Limiting
-rate_limit: 50  # peticiones por minuto
+rate_limit: 15  # peticiones por segundo
 ffuf_threads: 30
 
 # Scope
@@ -185,7 +185,7 @@ export BEARER_TOKEN="Bearer token123"
 | `--wordlist FILE` | Wordlist para ffuf (default: weblist.txt) |
 | `--params FILE` | Wordlist para parámetros (default: weblist.txt) |
 | `--user-agent UA` | User-Agent personalizado |
-| `--rate-limit NUM` | Peticiones por minuto (default: 50) |
+| `--rate-limit NUM` | Peticiones por segundo (default: 15) |
 | `--max-retries NUM` | Número de reintentos (default: 3) |
 | `-v, --verbose` | Modo verbose |
 | `-y, --yes` | Auto-aprobar autorización |
