@@ -1389,9 +1389,9 @@ EOF
         log_info "Generando reporte completo con full_cuackreport.py..."
         if run_cmd "python full_cuackreport.py" "Generando reporte completo" "full_cuackreport"; then
             # Buscar el reporte full generado
-            if [ -f "full_cuackrecon_report.md" ]; then
-                mv full_cuackrecon_report.md reports/
-                log_success "Reporte completo movido a reports/full_cuackrecon_report.md"
+            if [ -f "cuackrecon_megareport.html" ]; then
+                mv cuackrecon_megareport.html reports/
+                log_success "Reporte completo movido a reports/cuackrecon_megareport.html"
                 REPORTS_GENERATED=true
             elif [ -f "cuackrecon_full_report.md" ]; then
                 mv cuackrecon_full_report.md reports/
@@ -1478,7 +1478,7 @@ if [ -d "reports" ]; then
 fi
 
 # Copiar reportes individuales (por si están en el directorio raíz)
-for report in cuackrecon_report.md full_cuackrecon_report.md cuackrecon_full_report.md full_report.md; do
+for report in cuackrecon_report.md cuackrecon_megareport.html cuackrecon_full_report.md full_report.md; do
     if [ -f "$report" ]; then
         cp "$report" "$BACKUP_DIR/"
     fi
