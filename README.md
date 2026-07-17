@@ -51,6 +51,7 @@ cuackrecon/
 ## 🔧 Requisitos Previos
 
 - **Sistema operativo:** Linux (Kali Linux recomendado)
+- **Sistema operativo:** Linux (Districucion debian recomendada)
 - **Bash** 4.0+
 - **Python 3.8+**
 - **Go** 1.18+
