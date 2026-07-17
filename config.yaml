@@ -1,0 +1,46 @@
+target_url: "https://juiceshop.cuackerman.uk"
+wordlist_self: "weblist.txt"
+#wordlist_ffuf: "/usr/share/seclists/Discovery/Web-Content/common.txt"
+wordlist_ffuf: "weblist.txt"
+#paramater_names: "/usr/share/seclists/Discovery/Web-Content/burp-parameter-names.txt"
+paramater_names: "weblist.txt"
+
+# Autenticación
+cookies: "session=xyz123; token=abc456"
+bearer_token: "Bearer eyJhbGciOiJIUzI1NiIs..."
+#extra_headers: "X-Forwarded-For: 127.0.0.1"
+user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+
+# Rate Limiting
+rate_limit: 600
+
+# Scope
+scope:
+  - "juiceshop.cuackerman.uk"
+  - "*.cuackerman.uk"
+exclude:
+  - "admin.ejemplo.com"
+  - "test.ejemplo.com"
+
+# Pasos a ejecutar
+steps:
+  - basic
+  - subdomains      # ← Esto activará subfinder, assetfinder, httpx_subdomains
+  - historical
+  - active          # ← Esto activará httpx_historical y httpx_main
+  - crawling        # ← Esto activará katana_full y katana_js
+  - js_recon        # ← Esto activará linkfinder
+  - enumeration
+  - vulnerabilities
+  - report
+
+
+# Katana configuration
+katana_depth: 3
+katana_concurrency: 10
+katana_exclude_extensions: "js,css,png,jpg,jpeg,gif,svg,ico,woff,ttf,eot,pdf"
+
+# FFUF configuration
+ffuf_threads: 100
+ffuf_timeout: 5
+ffuf_max_time: 30000
