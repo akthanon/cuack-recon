@@ -24,7 +24,7 @@ AUTO_APPROVE=false
 RESUME_MODE=false
 
 # Rate Limiting
-RATE_LIMIT=50  # peticiones por minuto
+RATE_LIMIT=15 # peticiones por segundo
 MAX_RETRIES=3
 RETRY_DELAY=5
 REQUEST_DELAY=0.5  # segundos entre peticiones
@@ -333,7 +333,7 @@ check_if_blocked() {
         if [ $BLOCK_COUNT -ge $MAX_BLOCK_COUNT ]; then
             BLOCKED=true
             log_error "BLOQUEO CONFIRMADO. Sugerencias:"
-            echo "    - Reducir el rate limit (actual: $RATE_LIMIT req/min)"
+            echo "    - Reducir el rate limit (actual: $RATE_LIMIT req/sec)"
             echo "    - Cambiar User-Agent"
             echo "    - Usar proxies rotativos"
             echo "    - Esperar $RETRY_DELAY segundos antes de continuar"
@@ -394,7 +394,7 @@ execute_with_retry() {
                 sleep $((RETRY_DELAY * retries))
             fi
             
-            sleep $REQUEST_DELAY
+            sleep $LAY
         fi
     done
     
@@ -432,8 +432,8 @@ load_config() {
         RATE_LIMIT=$(grep -E '^[[:space:]]*rate_limit:' "$config_file" | sed -E 's/^[[:space:]]*rate_limit:[[:space:]]*//' | tr -d '"')
         RATE_LIMIT=${RATE_LIMIT:-50}
         
-        # Request_delay
-        REQUEST_DELAY=$(awk "BEGIN {printf \"%.6f\", 60 / $RATE_LIMIT}")
+        # lay
+        REQUEST_DELAY=$(awk "BEGIN {printf \"%.6f\", 1/$RATE_LIMIT}")
         
         # Después de cargar RATE_LIMIT
         KATANA_DEPTH=$(grep -E '^[[:space:]]*katana_depth:' "$config_file" | sed -E 's/^[[:space:]]*katana_depth:[[:space:]]*//' | tr -d '"')
@@ -537,11 +537,11 @@ check_authorization() {
     echo ""
     echo "1. Asegúrate de tener autorización para escanear este dominio"
     echo "2. Respeta los límites de rate-limit del programa de bug bounty"
-    echo "3. No excedas las 100 peticiones por minuto por defecto"
+    echo "3. No excedas las 15 peticiones por segundo por defecto"
     echo "4. Para escaneos extensivos, contacta primero al equipo de seguridad"
     echo ""
     echo "Objetivo: $TARGET_URL"
-    echo "Rate Limit: $RATE_LIMIT peticiones/minuto"
+    echo "Rate Limit: $RATE_LIMIT peticiones/segundo"
     echo ""
     
     if [ "$AUTO_MODE" = true ] && [ "$AUTO_APPROVE" = false ]; then
@@ -776,7 +776,7 @@ print_usage() {
     echo "  --wordlist FILE            Wordlist para ffuf (default: weblist.txt)"
     echo "  --params FILE              Wordlist para parámetros (default: weblist.txt)"
     echo "  --user-agent UA            User-Agent personalizado"
-    echo "  --rate-limit NUM           Peticiones por minuto (default: 50)"
+    echo "  --rate-limit NUM           Peticiones por segundo (default: 15)"
     echo "  --max-retries NUM          Número de reintentos (default: 3)"
     echo "  -v, --verbose              Modo verbose"
     echo "  -y, --yes                  Auto-aprobar autorización"
@@ -993,7 +993,7 @@ echo "[+] Target URL: $TARGET_URL"
 echo "[+] Dominio: $TARGET_DOMAIN"
 echo "[+] Dominio Base: $(extract_base_domain "$TARGET_DOMAIN")"
 echo "[+] Fecha: $(date)"
-echo "[+] Rate Limit: $RATE_LIMIT peticiones/minuto"
+echo "[+] Rate Limit: $RATE_LIMIT peticiones/segundo"
 echo "[+] Modo: $([ "$AUTO_MODE" = true ] && echo "Automático" || echo "Interactivo")"
 if [ "$AUTO_MODE" = true ]; then
     echo "[+] Pasos: $([ "$STEPS" = "all" ] && echo "Todos" || echo "$STEPS")"
@@ -1055,7 +1055,7 @@ if ask_step "Reconocimiento básico" "Nmap + WhatWeb + SpiderFoot" "basic"; then
     log_info "FASE 1 - Reconocimiento básico"
     
     if ask_step "Escaneo de puertos" "Nmap - Escaneo de puertos y servicios" "nmap" "true"; then
-        run_cmd_background "nmap -Pn -sV -sC --script=http-title,http-headers,http-methods --min-rate 1000 -T4 $TARGET_DOMAIN -oN logs/nmap.txt &" "Nmap scan" "nmap"
+        run_cmd_background "nmap -Pn -sV -sC --script=http-title,http-headers,http-methods -T3 --max-rate 50 --max-retries 1 $TARGET_DOMAIN -oN logs/nmap.txt &" "nmap"
     fi
     
     if ask_step "Fingerprinting" "WhatWeb - Identificación de tecnologías" "whatweb" "true"; then
@@ -1376,7 +1376,7 @@ if ask_step "Generar reporte" "Cuackreport - Reporte consolidado" "report"; then
 $(ls -la logs/ 2>/dev/null | grep -E "\.(txt|json)$" | awk '{print "- " $9}')
 
 ## Notas
-- Rate limit utilizado: $RATE_LIMIT peticiones/minuto
+- Rate limit utilizado: $RATE_LIMIT peticiones/segundo
 - Usuario: $(whoami)
 - Comando: $0 $@
 EOF
@@ -1452,7 +1452,7 @@ echo ""
 echo "  Target: $TARGET_URL"
 echo "  Dominio: $TARGET_DOMAIN"
 echo "  Fecha: $(date)"
-echo "  Rate Limit: $RATE_LIMIT peticiones/minuto"
+echo "  Rate Limit: $RATE_LIMIT peticiones/segundo"
 echo "  Autenticación: $(if [ ! -z "$COOKIES" ] || [ ! -z "$BEARER_TOKEN" ]; then echo "Configurada"; else echo "No configurada"; fi)"
 echo ""
 echo "  Archivos generados en logs/:"
