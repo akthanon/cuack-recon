@@ -11,7 +11,7 @@ import sys
 
 # --- Configuración ---
 REPORT_FILE = "cuackrecon_report.md"
-TARGET_URL = sys.argv[1]
+TARGET_URL = None
 MAX_PARAMS_TO_SHOW = 15
 MAX_DIRS_TO_SHOW = 25
 MAX_URLS_TO_SHOW = 20
@@ -378,10 +378,9 @@ def generate_report():
 
     # Obtener TARGET_URL de variable de entorno o archivo
     global TARGET_URL
-    TARGET_URL = sys.argv[1]
-
-    # Si no hay URL, intentar extraer de algún log
-    if TARGET_URL == 'No especificado':
+    if len(sys.argv) > 1:
+        TARGET_URL = sys.argv[1]
+    else:
         # Intentar leer de alive.txt
         if os.path.exists('logs/alive.txt'):
             try:
@@ -391,6 +390,12 @@ def generate_report():
                         TARGET_URL = first_line.split(' ')[0] if ' ' in first_line else first_line
             except:
                 pass
+    # Si sigue sin URL, usar valor por defecto
+    if TARGET_URL is None:
+        TARGET_URL = 'https://ejemplo.com'
+    
+    print(f"[+] URL objetivo: {TARGET_URL}")
+    
     """Genera el informe completo en Markdown."""
     print("[+] Generando informe de reconocimiento...")
 
