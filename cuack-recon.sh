@@ -1346,7 +1346,7 @@ if ask_step "Generar reporte" "Cuackreport - Reporte consolidado" "report"; then
     # Generar reporte principal
     if [ -f "cuackreport.py" ]; then
         log_info "Generando reporte principal con cuackreport.py..."
-        if run_cmd "python cuackreport.py" "Generando reporte principal" "cuackreport"; then
+        if run_cmd "python cuackreport.py $TARGET_URL" "Generando reporte principal" "cuackreport"; then
             # Mover reporte a la carpeta reports si existe
             if [ -f "cuackrecon_report.md" ]; then
                 mv cuackrecon_report.md reports/
@@ -1387,7 +1387,7 @@ EOF
     # Generar reporte completo (full)
     if [ -f "full_cuackreport.py" ]; then
         log_info "Generando reporte completo con full_cuackreport.py..."
-        if run_cmd "python full_cuackreport.py" "Generando reporte completo" "full_cuackreport"; then
+        if run_cmd "python full_cuackreport.py $TARGET_URL" "Generando reporte completo" "full_cuackreport"; then
             # Buscar el reporte full generado
             if [ -f "cuackrecon_megareport.html" ]; then
                 mv cuackrecon_megareport.html reports/
