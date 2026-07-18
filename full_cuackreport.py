@@ -11,10 +11,11 @@ from urllib.parse import urlparse, urljoin, parse_qs
 import math
 import hashlib
 from itertools import groupby
+import sys
 
 # --- Configuración ---
 REPORT_FILE = "cuackrecon_megareport.html"
-TARGET_URL = os.environ.get('TARGET_URL', 'No especificado')
+target_url = os.environ.get('target_url', 'No especificado')
 MAX_ITEMS_TO_SHOW = 30
 # --- Fin Configuración ---
 
@@ -57,17 +58,7 @@ class TreeBuilder:
         items = list(tree.items())
         
         # Obtener la URL base del entorno o usar la del reporte
-        base_url = os.environ.get('TARGET_URL', '').rstrip('/')
-        
-        # Intentar obtener la URL base del archivo de configuración si no está en el entorno
-        if not base_url and os.path.exists('config.yaml'):
-            try:
-                import yaml
-                with open('config.yaml', 'r') as f:
-                    config = yaml.safe_load(f)
-                    base_url = config.get('target_url', '').rstrip('/')
-            except:
-                pass
+        base_url = sys.argv[1]
         
         # Si no hay URL base, intentar obtenerla del archivo alive.txt
         if not base_url and os.path.exists('logs/alive.txt'):
@@ -167,15 +158,8 @@ class TreeBuilder:
         items = list(tree.items())
         
         # Obtener la URL base
-        base_url = os.environ.get('TARGET_URL', '').rstrip('/')
-        if not base_url and os.path.exists('config.yaml'):
-            try:
-                import yaml
-                with open('config.yaml', 'r') as f:
-                    config = yaml.safe_load(f)
-                    base_url = config.get('target_url', '').rstrip('/')
-            except:
-                pass
+        base_url = sys.argv[1]
+        
         if not base_url and os.path.exists('logs/alive.txt'):
             try:
                 with open('logs/alive.txt', 'r') as f:
@@ -908,26 +892,17 @@ def generate_advanced_report():
     """Genera un megareporte interactivo en HTML con análisis estadístico"""
     print("[+] Generando MEGAREPORTE con análisis avanzado...")
 
-    # Obtener TARGET_URL
-    global TARGET_URL
-    TARGET_URL = os.environ.get('TARGET_URL', 'No especificado')
-    
-    if TARGET_URL == 'No especificado' and os.path.exists('config.yaml'):
-        try:
-            import yaml
-            with open('config.yaml', 'r') as f:
-                config = yaml.safe_load(f)
-                TARGET_URL = config.get('target_url', 'No especificado')
-        except:
-            pass
+    # Obtener target_url
+    global target_url
+    base_url = sys.argv[1]
 
-    if TARGET_URL == 'No especificado':
+    if target_url == 'No especificado':
         if os.path.exists('logs/alive.txt'):
             try:
                 with open('logs/alive.txt', 'r') as f:
                     first_line = f.readline().strip()
                     if first_line:
-                        TARGET_URL = first_line.split(' ')[0] if ' ' in first_line else first_line
+                        target_url = first_line.split(' ')[0] if ' ' in first_line else first_line
             except:
                 pass
 
@@ -1491,7 +1466,7 @@ def generate_advanced_report():
     <div class="header-info">
         <h1>🔍 CuackRecon MegaReport</h1>
         <p style="font-size: 1.2em; opacity: 0.95;">Análisis Exhaustivo de Reconocimiento con Visualización Jerárquica</p>
-        <p><strong>Objetivo:</strong> {TARGET_URL}</p>
+        <p><strong>Objetivo:</strong> {target_url}</p>
         <p><strong>Fecha:</strong> {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</p>
         <p><strong>Versión:</strong> 3.0 (MegaReport con Árbol Maestro)</p>
     </div>
