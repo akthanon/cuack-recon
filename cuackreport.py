@@ -7,10 +7,11 @@ import os
 from datetime import datetime
 from collections import Counter, defaultdict
 from urllib.parse import urlparse
+import sys
 
 # --- Configuración ---
 REPORT_FILE = "cuackrecon_report.md"
-TARGET_URL = os.environ.get('TARGET_URL', 'No especificado')
+TARGET_URL = sys.argv[1]
 MAX_PARAMS_TO_SHOW = 15
 MAX_DIRS_TO_SHOW = 25
 MAX_URLS_TO_SHOW = 20
@@ -377,17 +378,7 @@ def generate_report():
 
     # Obtener TARGET_URL de variable de entorno o archivo
     global TARGET_URL
-    TARGET_URL = os.environ.get('TARGET_URL', 'No especificado')
-    
-    # Intentar leer de config.yaml si existe
-    if TARGET_URL == 'No especificado' and os.path.exists('config.yaml'):
-        try:
-            import yaml
-            with open('config.yaml', 'r') as f:
-                config = yaml.safe_load(f)
-                TARGET_URL = config.get('target_url', 'No especificado')
-        except:
-            pass
+    TARGET_URL = sys.argv[1]
 
     # Si no hay URL, intentar extraer de algún log
     if TARGET_URL == 'No especificado':
