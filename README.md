@@ -1,93 +1,93 @@
 # 🦆 CuackRecon
 
-**CuackRecon** es un conjunto de herramientas de reconocimiento web para Bug Bounty, diseñado para automatizar y optimizar el proceso de enumeración y descubrimiento de activos.
+**CuackRecon** is a set of web reconnaissance tools for Bug Bounty, designed to automate and optimize the asset enumeration and discovery process.
 
-## 📋 Tabla de Contenidos
+## 📋 Table of Contents
 
-- [Características](#-características)
-- [Estructura del Proyecto](#-estructura-del-proyecto)
-- [Requisitos Previos](#-requisitos-previos)
-- [Instalación](#-instalación)
-- [Configuración](#-configuración)
-- [Uso](#-uso)
-- [Herramientas Incluidas](#-herramientas-incluidas)
-- [Estructura de Directorios](#-estructura-de-directorios)
-- [Checkpoints y Reanudación](#-checkpoints-y-reanudación)
-- [Ejemplos de Configuración](#-ejemplos-de-configuración)
-- [Contribuciones](#-contribuciones)
-- [Licencia](#-licencia)
-- [Advertencias](#-advertencias)
+- [Features](#-features)
+- [Project Structure](#-project-structure)
+- [Prerequisites](#-prerequisites)
+- [Installation](#-installation)
+- [Configuration](#-configuration)
+- [Usage](#-usage)
+- [Included Tools](#-included-tools)
+- [Directory Structure](#-directory-structure)
+- [Checkpoints and Resume](#-checkpoints-and-resume)
+- [Configuration Examples](#-configuration-examples)
+- [Contributions](#-contributions)
+- [License](#-license)
+- [Warnings](#-warnings)
 
-## ✨ Características
+## ✨ Features
 
-- **Reconocimiento completo** automatizado con múltiples herramientas
-- **Sistema de checkpoints** para reanudar escaneos interrumpidos
-- **Rate limiting** configurable para evitar bloqueos
-- **Modo automático e interactivo** para control total
-- **Soporte de autenticación** (cookies, Bearer tokens, headers personalizados)
-- **Reportes detallados** en HTML y Markdown
-- **Visualización jerárquica** de directorios y endpoints
-- **Análisis estadístico** de resultados
-- **Detección de bloqueos** y reintentos automáticos
-- **Scope management** para limitar el escaneo a dominios específicos
+- **Complete reconnaissance** automated with multiple tools
+- **Checkpoint system** to resume interrupted scans
+- **Configurable rate limiting** to avoid blocks
+- **Automatic and interactive mode** for full control
+- **Authentication support** (cookies, Bearer tokens, custom headers)
+- **Detailed reports** in HTML and Markdown
+- **Hierarchical visualization** of directories and endpoints
+- **Statistical analysis** of results
+- **Block detection** and automatic retries
+- **Scope management** to limit scanning to specific domains
 
-## 📁 Estructura del Proyecto
+## 📁 Project Structure
 
 ```
 cuackrecon/
-├── cuack-recon.sh          # Script principal de reconocimiento
-├── cuack-install.sh        # Instalador de herramientas y dependencias
-├── cuacktest.py            # Escáner de directorios/archivos paralelizado
-├── cuackreport.py          # Generador de reportes Markdown
-├── full_cuackreport.py     # Generador de reportes HTML con análisis avanzado
-├── config.yaml             # Archivo de configuración de ejemplo
-├── weblist.txt             # Wordlist por defecto para fuzzing
-├── checkpoints/            # Directorio de puntos de control
-├── logs/                   # Logs y resultados de herramientas
-├── reports/                # Reportes generados
-└── tools/                  # Herramientas instaladas
+├── cuack-recon.sh          # Main reconnaissance script
+├── cuack-install.sh        # Tool and dependency installer
+├── cuacktest.py            # Parallelized directory/file scanner
+├── cuackreport.py          # Markdown report generator
+├── full_cuackreport.py     # HTML report generator with advanced analysis
+├── config.yaml             # Example configuration file
+├── weblist.txt             # Default wordlist for fuzzing
+├── checkpoints/            # Checkpoints directory
+├── logs/                   # Logs and tool results
+├── reports/                # Generated reports
+└── tools/                  # Installed tools
 ```
 
-## 🔧 Requisitos Previos
+## 🔧 Prerequisites
 
-- **Sistema operativo:** Linux (Kali Linux recomendado)
-- **Sistema operativo:** Linux (Districucion debian recomendada)
+- **Operating system:** Linux (Kali Linux recommended)
+- **Operating system:** Linux (Debian distribution recommended)
 - **Bash** 4.0+
 - **Python 3.8+**
 - **Go** 1.18+
-- **Herramientas base:** git, curl, wget, jq, nmap, whatweb
+- **Base tools:** git, curl, wget, jq, nmap, whatweb
 
-## 📦 Instalación
+## 📦 Installation
 
-### Instalación Automática (Recomendada)
+### Automatic Installation (Recommended)
 
 ```bash
-# Clonar el repositorio
-git clone https://github.com/tu-usuario/cuackrecon.git
+# Clone the repository
+git clone https://github.com/akthanon/cuackrecon.git
 cd cuackrecon
 
-# Dar permisos de ejecución
+# Give execution permissions
 chmod +x cuack-install.sh cuack-recon.sh
 
-# Ejecutar el instalador
+# Run the installer
 ./cuack-install.sh
 ```
 
-El instalador:
-1. Instala todas las dependencias del sistema
-2. Crea un entorno virtual de Python
-3. Instala las herramientas Go necesarias
-4. Descarga wordlists y templates
-5. Configura la estructura de directorios
+The installer:
+1. Installs all system dependencies
+2. Creates a Python virtual environment
+3. Installs the necessary Go tools
+4. Downloads wordlists and templates
+5. Configures the directory structure
 
-### Instalación Manual
+### Manual Installation
 
 ```bash
-# Instalar dependencias del sistema
+# Install system dependencies
 sudo apt-get update
 sudo apt-get install -y python3 python3-pip python3-venv git curl wget nmap whatweb jq unzip
 
-# Instalar herramientas Go
+# Install Go tools
 go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
 go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest
 go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest
@@ -97,16 +97,16 @@ go install -v github.com/tomnomnom/waybackurls@latest
 go install -v github.com/projectdiscovery/katana/cmd/katana@latest
 go install -v github.com/tomnomnom/assetfinder@latest
 
-# Crear directorios
+# Create directories
 mkdir -p logs reports checkpoints
 ```
 
-## ⚙️ Configuración
+## ⚙️ Configuration
 
-### Archivo de Configuración (config.yaml)
+### Configuration File (config.yaml)
 
 ```yaml
-# URL objetivo
+# Target URL
 target_url: "https://ejemplo.com"
 
 # Wordlists
@@ -114,14 +114,14 @@ wordlist_self: "weblist.txt"
 wordlist_ffuf: "weblist.txt"
 paramater_names: "weblist.txt"
 
-# Autenticación
+# Authentication
 cookies: "session=xyz123; token=abc456"
 bearer_token: "Bearer eyJhbGciOiJIUzI1NiIs..."
 extra_headers: "X-Forwarded-For: 127.0.0.1"
 user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
 
 # Rate Limiting
-rate_limit: 15  # peticiones por segundo
+rate_limit: 15  # requests per second
 ffuf_threads: 30
 
 # Scope
@@ -132,7 +132,7 @@ exclude:
   - "admin.ejemplo.com"
   - "test.ejemplo.com"
 
-# Pasos a ejecutar
+# Steps to run
 steps:
   - basic
   - subdomains
@@ -151,7 +151,7 @@ katana_depth: 3
 ffuf_threads: 100
 ```
 
-### Variables de Entorno
+### Environment Variables
 
 ```bash
 export TARGET_URL="https://ejemplo.com"
@@ -159,134 +159,134 @@ export COOKIES="session=xyz123"
 export BEARER_TOKEN="Bearer token123"
 ```
 
-## 🚀 Uso
+## 🚀 Usage
 
-### Ejecutar un Escaneo Completo
+### Run a Full Scan
 
 ```bash
-# Usando archivo de configuración
+# Using configuration file
 ./cuack-recon.sh -c config.yaml
 
-# Usando URL directa
+# Using direct URL
 ./cuack-recon.sh -u https://ejemplo.com -y
 
-# Con autenticación
+# With authentication
 ./cuack-recon.sh -u https://ejemplo.com --cookies "session=xyz123" --bearer "Bearer token123"
 ```
 
-### Opciones Disponibles
+### Available Options
 
-| Opción | Descripción |
+| Option | Description |
 |--------|-------------|
-| `-c, --config FILE` | Archivo de configuración (YAML) |
-| `-u, --url URL` | URL objetivo |
-| `--cookies COOKIES` | Cookies en formato `nombre1=valor1; nombre2=valor2` |
-| `--bearer TOKEN` | Bearer token de autenticación |
-| `--headers HEADERS` | Headers adicionales |
-| `--wordlist FILE` | Wordlist para ffuf (default: weblist.txt) |
-| `--params FILE` | Wordlist para parámetros (default: weblist.txt) |
-| `--user-agent UA` | User-Agent personalizado |
-| `--rate-limit NUM` | Peticiones por segundo (default: 15) |
-| `--max-retries NUM` | Número de reintentos (default: 3) |
-| `-v, --verbose` | Modo verbose |
-| `-y, --yes` | Auto-aprobar autorización |
-| `--resume` | Reanudar desde el último checkpoint |
-| `-h, --help` | Mostrar ayuda |
+| `-c, --config FILE` | Configuration file (YAML) |
+| `-u, --url URL` | Target URL |
+| `--cookies COOKIES` | Cookies in format `name1=value1; name2=value2` |
+| `--bearer TOKEN` | Bearer authentication token |
+| `--headers HEADERS` | Additional headers |
+| `--wordlist FILE` | Wordlist for ffuf (default: weblist.txt) |
+| `--params FILE` | Wordlist for parameters (default: weblist.txt) |
+| `--user-agent UA` | Custom User-Agent |
+| `--rate-limit NUM` | Requests per second (default: 15) |
+| `--max-retries NUM` | Number of retries (default: 3) |
+| `-v, --verbose` | Verbose mode |
+| `-y, --yes` | Auto-approve authorization |
+| `--resume` | Resume from the last checkpoint |
+| `-h, --help` | Show help |
 
-### Reanudar un Escaneo
+### Resume a Scan
 
 ```bash
-# Reanudar desde el último checkpoint
+# Resume from the last checkpoint
 ./cuack-recon.sh --resume
 ```
 
-### Ejecutar Herramientas Individuales
+### Run Individual Tools
 
 ```bash
-# Escaneo con cuacktest.py
+# Scan with cuacktest.py
 python3 cuacktest.py https://ejemplo.com -w weblist.txt -r 0.5
 
-# Generar reporte
+# Generate report
 python3 cuackreport.py
 
-# Generar reporte avanzado
+# Generate advanced report
 python3 full_cuackreport.py
 ```
 
-## 🛠️ Herramientas Incluidas
+## 🛠️ Included Tools
 
-### Escaneo Pasivo
-- **Subfinder**: Enumeración de subdominios
-- **Assetfinder**: Enumeración adicional de subdominios
-- **Gau**: Recopilación de URLs históricas
-- **Waybackurls**: URLs del archivo Wayback Machine
-- **WhatWeb**: Fingerprinting de tecnologías
+### Passive Scanning
+- **Subfinder**: Subdomain enumeration
+- **Assetfinder**: Additional subdomain enumeration
+- **Gau**: Historical URL collection
+- **Waybackurls**: URLs from the Wayback Machine archive
+- **WhatWeb**: Technology fingerprinting
 
-### Escaneo Activo
-- **Nmap**: Escaneo de puertos y servicios
-- **HTTPX**: Verificación de hosts activos
-- **Katana**: Crawling web avanzado
-- **FFUF**: Fuzzing de directorios y parámetros
-- **Nuclei**: Escaneo de vulnerabilidades
+### Active Scanning
+- **Nmap**: Port and service scanning
+- **HTTPX**: Live host verification
+- **Katana**: Advanced web crawling
+- **FFUF**: Directory and parameter fuzzing
+- **Nuclei**: Vulnerability scanning
 
-### Análisis de JavaScript
-- **LinkFinder**: Extracción de endpoints de archivos JS
-- **Katana JS**: Extracción de archivos JavaScript
+### JavaScript Analysis
+- **LinkFinder**: Endpoint extraction from JS files
+- **Katana JS**: JavaScript file extraction
 
 ### Custom
-- **cuacktest.py**: Escáner paralelizado de directorios/archivos
-- **cuackreport.py**: Generador de reportes Markdown
-- **full_cuackreport.py**: Generador de reportes HTML avanzados
+- **cuacktest.py**: Parallelized directory/file scanner
+- **cuackreport.py**: Markdown report generator
+- **full_cuackreport.py**: Advanced HTML report generator
 
-## 📂 Estructura de Directorios
+## 📂 Directory Structure
 
 ```
 cuackrecon/
-├── logs/                          # Logs de todas las herramientas
-│   ├── nmap.txt                   # Resultados de Nmap
-│   ├── whatweb.txt                # Resultados de WhatWeb
-│   ├── subdomains.txt             # Subdominios encontrados
-│   ├── historical_urls.txt        # URLs históricas
-│   ├── alive.txt                  # Hosts activos
-│   ├── katana.txt                 # URLs del crawling
-│   ├── js_files.txt               # Archivos JavaScript
-│   ├── endpoints_from_js.txt      # Endpoints extraídos
-│   ├── ffuf_directories.json      # Resultados de FFUF directorios
-│   ├── ffuf_parameters.json       # Resultados de FFUF parámetros
-│   ├── nuclei_*.json              # Resultados de Nuclei
-│   └── scan_results*.json         # Resultados de cuacktest
-├── reports/                       # Reportes generados
-│   ├── cuackrecon_report.md       # Reporte Markdown
-│   ├── cuackrecon_megareport.html # Reporte HTML avanzado
-│   └── cuackrecon_full_report.md  # Reporte completo
-└── checkpoints/                   # Puntos de control
-    ├── last_step.txt              # Último paso completado
-    ├── completed_steps.txt        # Pasos completados
-    └── config.env                 # Configuración guardada
+├── logs/                          # Logs from all tools
+│   ├── nmap.txt                   # Nmap results
+│   ├── whatweb.txt                # WhatWeb results
+│   ├── subdomains.txt             # Found subdomains
+│   ├── historical_urls.txt        # Historical URLs
+│   ├── alive.txt                  # Live hosts
+│   ├── katana.txt                 # Crawling URLs
+│   ├── js_files.txt               # JavaScript files
+│   ├── endpoints_from_js.txt      # Extracted endpoints
+│   ├── ffuf_directories.json      # FFUF directory results
+│   ├── ffuf_parameters.json       # FFUF parameter results
+│   ├── nuclei_*.json              # Nuclei results
+│   └── scan_results*.json         # cuacktest results
+├── reports/                       # Generated reports
+│   ├── cuackrecon_report.md       # Markdown report
+│   ├── cuackrecon_megareport.html # Advanced HTML report
+│   └── cuackrecon_full_report.md  # Full report
+└── checkpoints/                   # Checkpoints
+    ├── last_step.txt              # Last completed step
+    ├── completed_steps.txt        # Completed steps
+    └── config.env                 # Saved configuration
 ```
 
-## 💾 Checkpoints y Reanudación
+## 💾 Checkpoints and Resume
 
-El sistema de checkpoints permite:
-- Guardar el progreso después de cada paso
-- Reanudar escaneos interrumpidos (Ctrl+C)
-- Evitar re-ejecutar pasos ya completados
-- Preservar resultados parciales
+The checkpoint system allows you to:
+- Save progress after each step
+- Resume interrupted scans (Ctrl+C)
+- Avoid re-running already completed steps
+- Preserve partial results
 
-### Uso de Checkpoints
+### Using Checkpoints
 
 ```bash
-# Iniciar un escaneo (se guardarán checkpoints automáticamente)
+# Start a scan (checkpoints will be saved automatically)
 ./cuack-recon.sh -c config.yaml
 
-# Si se interrumpe (Ctrl+C), se guarda el estado
-# Para reanudar:
+# If interrupted (Ctrl+C), the state is saved
+# To resume:
 ./cuack-recon.sh --resume
 ```
 
-## 📝 Ejemplos de Configuración
+## 📝 Configuration Examples
 
-### Configuración Básica
+### Basic Configuration
 
 ```yaml
 target_url: "https://ejemplo.com"
@@ -296,7 +296,7 @@ steps:
   - report
 ```
 
-### Configuración Completa con Autenticación
+### Full Configuration with Authentication
 
 ```yaml
 target_url: "https://api.ejemplo.com"
@@ -316,7 +316,7 @@ steps:
   - report
 ```
 
-### Configuración para Escaneo Rápido
+### Configuration for Quick Scan
 
 ```yaml
 target_url: "https://ejemplo.com"
@@ -328,27 +328,27 @@ steps:
   - report
 ```
 
-## 🤝 Contribuciones
+## 🤝 Contributions
 
-Las contribuciones son bienvenidas. Por favor:
+Contributions are welcome. Please:
 
-1. Haz un fork del repositorio
-2. Crea una rama para tu feature (`git checkout -b feature/nueva-funcionalidad`)
-3. Commit de tus cambios (`git commit -m 'Añadir nueva funcionalidad'`)
-4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
-5. Abre un Pull Request
+1. Fork the repository
+2. Create a branch for your feature (`git checkout -b feature/new-feature`)
+3. Commit your changes (`git commit -m 'Add new feature'`)
+4. Push to the branch (`git push origin feature/new-feature`)
+5. Open a Pull Request
 
-## 📄 Licencia
+## 📄 License
 
-Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
+This project is under the MIT License. See the `LICENSE` file for more details.
 
-## ⚠️ Advertencias
+## ⚠️ Warnings
 
-- **Autorización:** Asegúrate de tener permiso explícito para escanear el objetivo.
-- **Rate Limiting:** Respeta los límites del programa de Bug Bounty.
-- **Uso Ético:** Utiliza estas herramientas solo en sistemas que tengas autorización para probar.
-- **Responsabilidad:** El autor no se hace responsable del uso indebido de estas herramientas.
+- **Authorization:** Make sure you have explicit permission to scan the target.
+- **Rate Limiting:** Respect the limits of the Bug Bounty program.
+- **Ethical Use:** Use these tools only on systems you have authorization to test.
+- **Responsibility:** The author is not responsible for misuse of these tools.
 
 ---
 
-**🦆 CuackRecon - Reconocimiento web automatizado para Bug Bounty**
+**🦆 CuackRecon - Automated web reconnaissance for Bug Bounty**
